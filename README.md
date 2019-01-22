@@ -1,2 +1,2 @@
-# RESTful-API
-RESTful API build using Node.js
+# Shop API
+RESTful API for a shop build using Node.js

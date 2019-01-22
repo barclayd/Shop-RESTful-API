@@ -1,0 +1,23 @@
+{
+  "name": "restful-api",
+  "version": "1.0.0",
+  "description": "RESTful API build using Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barclayd/RESTful-API.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/barclayd/RESTful-API/issues"
+  },
+  "homepage": "https://github.com/barclayd/RESTful-API#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "node.js": "0.0.0"
+  }
+}

@@ -8,6 +8,7 @@ const Product = require('../models/product');
 router.get('/', (req, res, next) => {
     Order.find()
         .select('-__v')
+        .populate('product', '-__v')
         .exec()
         .then(docs => {
             console.log(docs);
@@ -39,6 +40,7 @@ router.get('/', (req, res, next) => {
 router.get('/:orderID', (req, res, next) => {
     const id = req.params.orderID;
     Order.findById(id)
+        .populate('product', '-__v')
         .exec()
         .then(order => {
             if (!order) {

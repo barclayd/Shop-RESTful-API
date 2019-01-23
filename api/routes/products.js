@@ -1,7 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+   destination: function (req, file, cb) {
+        cb(null, './uploads/');
+   },
+    filename: function (req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname)
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+  // reject file
+    if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        // accept file
+        cb(null, true);
+    } else {
+        cb(null, false);
+    }
+};
+const upload = multer({
+   storage: storage,
+    limits: {
+       // 5 mb limit
+       fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+});
 const Product = require('../models/product');
 
 router.get('/', (req, res, next) => {
@@ -16,6 +43,7 @@ router.get('/', (req, res, next) => {
                       name: doc.name,
                       price: doc.price,
                       _id: doc._id,
+                      productImage: doc.productImage,
                       request: {
                           type: 'GET',
                           description: 'GET_PRODUCT_BY_ID',
@@ -51,11 +79,7 @@ router.get('/:productID', (req, res, next) => {
             if(doc) {
                 res.status(200).json({
                     message: `Found product of id: ${id}`,
-                    product: {
-                        name: doc.name,
-                        price: doc.price,
-                        id: doc._id
-                    },
+                    product: doc,
                     request: {
                         type: 'GET',
                         description: "GET_ALL_PRODUCTS",
@@ -77,11 +101,12 @@ router.get('/:productID', (req, res, next) => {
         });
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', upload.single('productImage'), (req, res, next) => {
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        price: req.body.price
+        price: req.body.price,
+        productImage: req.file.path
     });
     product
         .save()

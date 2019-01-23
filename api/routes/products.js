@@ -6,7 +6,7 @@ const Product = require('../models/product');
 
 router.get('/', (req, res, next) => {
     Product.find()
-        .select('_id price name')
+        .select('-__v')
         .exec()
         .then(docs => {
             const response = {
@@ -44,7 +44,7 @@ router.get('/', (req, res, next) => {
 router.get('/:productID', (req, res, next) => {
     const id = req.params.productID;
     Product.findById(id)
-        .select('_id price name')
+        .select('-__v')
         .exec()
         .then(doc => {
             console.log(doc);

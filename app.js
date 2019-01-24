@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const productRoutes = require('./api/routes/products');
 const orderRoutes = require('./api/routes/orders');
-const userRoutes = require('./api/routes/users');
+const userRoutes = require('./api/routes/user');
 
 // connect to mongoDB
 mongoose.connect(`mongodb+srv://admin:${process.env.MONGO_ATLAS_PW}@shoprestapi-moutp.mongodb.net/test?retryWrites=true`, {useNewUrlParser: true});

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
+const checkAuth = require('../middleware/check-auth');
 
 const storage = multer.diskStorage({
    destination: function (req, file, cb) {
@@ -101,7 +102,7 @@ router.get('/:productID', (req, res, next) => {
         });
 });
 
-router.post('/', upload.single('productImage'), (req, res, next) => {
+router.post('/', checkAuth, upload.single('productImage'), (req, res, next) => {
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -113,7 +114,7 @@ router.post('/', upload.single('productImage'), (req, res, next) => {
         .then(result => {
             console.log(result);
             res.status(201).json({
-                message: 'Handling POST requests to /products',
+                message: 'Created product successfully',
                 createdProduct: {
                     name: result.name,
                     price: result.price,
@@ -134,7 +135,7 @@ router.post('/', upload.single('productImage'), (req, res, next) => {
         });
 });
 
-router.patch('/:productId', (req, res, next) => {
+router.patch('/:productId', checkAuth, (req, res, next) => {
     const id = req.params.productId;
     const updateOps = {};
     for (let ops of req.body){
@@ -163,7 +164,7 @@ router.patch('/:productId', (req, res, next) => {
 
 });
 
-router.delete('/:productID', (req, res, next) => {
+router.delete('/:productID', checkAuth, (req, res, next) => {
     const id = req.params.productID;
     Product.deleteOne({
         _id: id
